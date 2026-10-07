@@ -4,8 +4,8 @@
 4cae77f903b0dc4b81afd44d3d2df7a6da902e688c45954e8ab289327e298ecd  ./.gitattributes
 8f81ddecc41d21264b5fa97dbd8a236c76e771c80c2a330368d5f387c2ca2a2f  ./.github/workflows/validate-site.yml
 d730d9248e47ff5833683ddfea3b259eee3965f3bbd292bedeca73c6971cff13  ./.gitignore
-2171c6731f338e9101c8ab165a10066275f84777d640d091314654a515e783eb  ./.pages.yml
-399638b731d06f16f12fd1efd9e2e51a2d0c2499558aec88debf6475ed68c950  ./GUIA-COLABORADOR.txt
+264352f4da65fca51e386c5b95b4ab6275068eded6cc68ba59f4b2efebf966f5  ./.pages.yml
+c0a7b57d4bb2e5d7dc4e80efa3d71d451976599cc0dd204c2134810501d99d7c  ./GUIA-COLABORADOR.txt
 f1ae1d3b52936ce8e399c1f1b79638ebf30d68c28a352212f5cc8c54885c4503  ./LEIA-ME-ATUALIZACAO-SEGURA.txt
 345d2bf7369bb550cca9389c7882fbe5e0815a46901ed773a7ebd6ff443ae941  ./README.md
 1a1795be5b7be079dcdaf140241d33930cfb8cde1c6fb11a3368f6773407ff5b  ./RELATORIO-AUDITORIA.txt
@@ -14,7 +14,7 @@ f1ae1d3b52936ce8e399c1f1b79638ebf30d68c28a352212f5cc8c54885c4503  ./LEIA-ME-ATUA
 2bf94bb9682d43d037255afb82240f21c6eb146e6cef76fb9fe482f82d3a7090  ./assets/js/app.js
 0de67805af998749e0c242519eb294ae7cbaea1e92e7fdbc45443377b947624f  ./catalogos.html
 77aef867a4877fb38305ceb7a98592fe16ee0cec3895255df7c702650ffa4e43  ./contato.html
-cc7bb8cbf71fd68451ca446c4b68c8da835f48229e5df2d8281792f468b874b2  ./docs/DEPLOY-GITHUB-PAGES.md
+3455e761abdb6af9ae9063174215d306f92c039e829bcfa5a4a8231a209de6a5  ./docs/DEPLOY-GITHUB-PAGES.md
 ed9f7c584a8ce19db1e7c939797c0e20dcdb7b176f4331e320e47d5439bed8eb  ./docs/OTIMIZACAO-IMAGENS.md
 2a04169cef3a4bc9a4a3272ce01eaf7d1ea72d78eca3374eb5b5130ef903383b  ./galeria.html
 66ac7820bd8324141a0a0d101290a8e7efa33117fa8198892c8c4dec71872323  ./index.html
@@ -25,11 +25,12 @@ c59ee82fcc849e60d3c0a6d91e0c36d93bd66980f12dc5080ff1460ddd3a058f  ./package.json
 1f6e0fe56e25ddf0513fa079f1e7212ad6fa739f633c30184cb24c7ee9de9e0c  ./produtos.html
 5f5f3f3d0b2f5a77c9c3f59cf2128e46c84a69c64ff475df4ff06b783d475f81  ./quem-somos.html
 8422f11afe6ce48f3820f23194e99f08f888117c57f9df91cdfd21db77af16b2  ./representantes.html
-60cc6706cf56ff85b6fb9e63543caa9dd15d498ed1c3b49762fcfa669ca666d5  ./scripts/build-site.py
-22248e3873e5b0682afeb81791fc0ea4f44b672ef6dc7ec3dc07ef93564d2bc8  ./scripts/checksums.mjs
+aa2d4f5f0c0b98cc5bc7339238fb6bef326affb3bf9eff784ac4e61713665974  ./scripts/build-site.py
+949b831fdf736cbaace98c13f932cfc5ad8dac4742d4203f3faa912c9954d76e  ./scripts/checksums.mjs
 d0524439f7a0da67c1283d44683e00fcc795a0657e726f22087cfcbe198f7c89  ./scripts/image-requirements.txt
+3154cb6a4fa3358a4785d5a0a3c2f0afcced10e2580b5563529c89f6d5df5fbe  ./scripts/media-aliases.json
 055f33a433546fc427a998357903cf774b17237e6ffe574d35a4ea221398fae6  ./scripts/optimize-images.py
 5c692590db7ac577d3d3fd565b2617628e130b781b680bd896797c5904b3b0bb  ./scripts/validate-content.mjs
 c20c9179764a5092fb33e5c9d0b018dd886eb517f4ce48d2f4c137735fd7fda1  ./sobre.html
 da3b370c69fa21472d0d1faa716120d031b1e7f9c567a35087aae97016f21210  ./tests/site-smoke.mjs
-ec2ca7b3ebd4d045505341cce94ad6f476ce7547b2cfd98e25529231cac785f1  ./tests/test_image_pipeline.py
+97c442420ad1b318ce54027c7d860d3c14d63c26c14e26194643b087bbd62087  ./tests/test_image_pipeline.py

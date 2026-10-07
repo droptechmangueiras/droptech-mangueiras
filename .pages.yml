@@ -315,6 +315,7 @@ content:
       - {name: capa, label: Capa, type: image, options: {media: arquivos}}
       - name: arquivo
         label: Arquivo PDF
+        description: "Para evitar erro 413, prefira arquivos de até 3 MB no upload do CMS. Para PDFs maiores, envie pelo GitHub em assets/uploads e depois selecione o arquivo já existente aqui. Não exclua o PDF anterior antes de atualizar e publicar o cadastro."
         type: file
         required: true
         options: {media: arquivos, extensions: [pdf]}

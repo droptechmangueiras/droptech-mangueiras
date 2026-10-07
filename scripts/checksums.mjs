@@ -16,6 +16,7 @@ const files=[
   'docs/DEPLOY-GITHUB-PAGES.md','docs/OTIMIZACAO-IMAGENS.md',
   'package.json','package-lock.json',
   'scripts/build-site.py','scripts/checksums.mjs','scripts/image-requirements.txt',
+  'scripts/media-aliases.json',
   'scripts/optimize-images.py','scripts/validate-content.mjs',
   'tests/test_image_pipeline.py','tests/site-smoke.mjs'
 ].sort();

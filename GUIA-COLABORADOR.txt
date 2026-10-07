@@ -29,12 +29,16 @@ Cada produto precisa ter um identificador ÚNICO. Exemplos:
 Não use o mesmo identificador em dois produtos. Ele faz parte do link da página individual.
 
 UPLOADS
-Não precisa organizar arquivos manualmente.
 Ao editar um produto, galeria, catálogo etc., use o botão de upload do próprio campo.
 A seção "Arquivos do site" serve apenas como biblioteca geral.
+Para upload pelo CMS, prefira arquivos de até 3 MB (3.000.000 bytes). É uma margem recomendada, não um bloqueio configurado no site.
+Se aparecer 413, a requisição de upload excedeu o limite do serviço. A otimização do Actions só acontece depois que o upload chega ao GitHub; ela não resolve esse limite e não comprime PDFs.
+Para um PDF maior: no GitHub, abra assets/uploads na branch main, use Add file > Upload files e envie com um nome novo. Depois, atualize a biblioteca do CMS, selecione o arquivo existente em Catálogos > Arquivo PDF e salve. Não repita o upload pelo CMS.
+Para imagens grandes, envie uma cópia reduzida (guardando o original) ou use o mesmo procedimento pelo GitHub.
+Espere build e deploy concluírem e teste o botão do catálogo. Não exclua o arquivo antigo: a remoção antes de atualizar o cadastro bloqueia a publicação e links compartilhados podem continuar usando a URL anterior.
 Ao salvar uma imagem referenciada, o GitHub Actions gera as versões WebP necessárias para a publicação. Textos sem mudança de imagem reutilizam as variantes.
 Não mova, renomeie ou exclua arquivos já usados: primeiro confira e atualize todos os campos que os referenciam. A URL antiga pode estar em links compartilhados.
-O PDF atual do catálogo também existe na URL antiga para manter os links funcionando; mantenha ambos até uma revisão de compatibilidade.
+As duas URLs antigas do catálogo são recriadas no artefato publicado, a partir do PDF atual, conforme scripts/media-aliases.json. Essas cópias não aparecem na biblioteca do CMS nem precisam ser adicionadas ao Git. Se trocar o PDF por outro caminho, peça também a atualização desse mapa antes de remover o arquivo anterior.
 
 FICHA TÉCNICA DOS PRODUTOS
 Em Produtos > escolha o produto > Ficha técnica, preencha apenas os dados que souber:

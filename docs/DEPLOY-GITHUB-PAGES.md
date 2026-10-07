@@ -46,7 +46,19 @@ Deploy tem `contents:read`, `pages:write` e `id-token:write`, ambiente `github-p
 4. Com erro, corrija a referência/estrutura no CMS ou repositório; o último site válido permanece no ar. Não basta salvar um arquivo em outra pasta: os campos que o usam continuam apontando para a URL cadastrada.
 5. Os rascunhos de produto não são exibidos no site público. Revise campos antes de ativar e confira o site depois da publicação.
 
-O PDF atual também foi disponibilizado em `assets/uploads/catalogo-droptech-2026-9.pdf`, mantendo a URL já cadastrada. O arquivo em `assets/uploads/catalogos/` permanece preservado. Essa compatibilidade adiciona uma cópia ao armazenamento, sem download duplicado automático pelo visitante.
+`scripts/media-aliases.json` relaciona as duas URLs antigas de catálogo ao PDF atual. Depois de copiar os arquivos públicos, o build recria esses caminhos apenas no artefato, com bytes idênticos ao PDF de origem. Não adiciona PDFs duplicados ao Git nem altera cadastros do CMS. Com o catálogo atual, acrescenta 7.707.838 bytes ao artefato; o visitante só transfere o endereço que abrir.
+
+Um upload real que ocupe a URL antiga é preservado. Uma origem ausente ou sem assinatura PDF, ou um caminho fora de assets/uploads, bloqueia o build. Ao mudar o caminho do catálogo, atualize também o mapa antes de remover a origem anterior. Os testes cobrem URLs de compatibilidade, preservação de uploads existentes e rejeição de fontes inválidas. Em rollback para publicação direta da branch, essas cópias de compatibilidade não serão geradas.
+
+## Uploads e erro 413 no CMS
+
+O upload do Pages CMS envia o conteúdo em Base64, aumentando o corpo da requisição em cerca de um terço. O limite documentado das funções Vercel é 4,5 MB por requisição; um PDF de 3.853.919 bytes gera 5.138.560 bytes de Base64 antes do JSON. Isso é compatível com o 413 observado, embora o arquivo da tentativa original não tenha sido confirmado.
+
+Recomenda-se até 3.000.000 bytes por upload pelo CMS, com margem. Essa recomendação não altera o limite do servidor nem bloqueia arquivos maiores já presentes no GitHub. Para arquivos maiores, envie pelo GitHub para assets/uploads com um nome novo e selecione o arquivo existente no CMS. Preserve o anterior até revisar referências e URLs públicas. A geração de WebP ocorre após o upload e não processa PDFs.
+
+Fontes: [código do uploader do Pages CMS](https://github.com/hunvreus/pagescms/blob/main/components/media/media-upload.tsx) e [limites da Vercel](https://vercel.com/docs/functions/limitations#request-body-size). Aumentar esse limite exige mudanças no serviço do CMS, fora deste repositório.
+
+O teste de conteúdo inválido captura a saída do subprocesso e confirma o erro esperado sem emitir uma anotação vermelha enganosa no Actions. A validação real do site continua exibindo erros e bloqueando a publicação normalmente.
 
 `.gitattributes` declara PDFs como binários: o Git preserva seus bytes e não aplica conversão de finais de linha nem verificações de espaços de código a documentos. Nenhum PDF existente foi recodificado ou normalizado.
 

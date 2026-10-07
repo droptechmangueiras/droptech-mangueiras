@@ -31,6 +31,40 @@ def public_files(root):
     return sorted(files)
 
 
+def add_media_aliases(root, output):
+    """Restore legacy PDF URLs in the artifact without duplicating Git uploads."""
+    config = root / 'scripts/media-aliases.json'
+    if not config.is_file():
+        return
+    aliases = json.loads(config.read_text(encoding='utf-8'))
+    if not isinstance(aliases, dict):
+        raise ValueError('Media aliases must be an object')
+
+    def pdf_path(ref):
+        if not isinstance(ref, str) or not ref.startswith('assets/uploads/') or '\\' in ref:
+            raise ValueError(f'Invalid PDF alias path: {ref!r}')
+        if any(part in ('', '.', '..') for part in ref.split('/')) or Path(ref).suffix.lower() != '.pdf':
+            raise ValueError(f'Invalid PDF alias path: {ref!r}')
+        result = output / ref
+        if not result.resolve().is_relative_to(output.resolve()):
+            raise ValueError(f'PDF alias escapes artifact: {ref!r}')
+        return result
+
+    for alias, original in aliases.items():
+        target, source = pdf_path(alias), pdf_path(original)
+        # Never overwrite a real upload that occupies a legacy URL.
+        if target.is_file():
+            continue
+        if not source.is_file():
+            raise ValueError(f'Missing PDF alias source: {original}')
+        with source.open('rb') as stream:
+            if stream.read(5) != b'%PDF-':
+                raise ValueError(f'Invalid PDF alias source: {original}')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        print(f'PDF compatibility URL: {alias} -> {original}', flush=True)
+
+
 def validate_artifact(output):
     """Check static URLs, including srcset, and CMS media inside the actual artifact."""
     if not (output / 'index.html').is_file():
@@ -101,6 +135,7 @@ def build(root, output, node='node', cache=None):
         target = output / source.relative_to(root)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
+    add_media_aliases(root, output)
     validate_artifact(output)
     count = sum(1 for p in output.rglob('*') if p.is_file())
     print(f'Static artifact validated: {count} files in {output}', flush=True)

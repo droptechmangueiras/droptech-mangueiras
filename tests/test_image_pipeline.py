@@ -139,9 +139,52 @@ class PipelineTests(unittest.TestCase):
     def test_invalid_content_blocks_packaging(self):
         (self.root / 'index.html').write_text(self.html.replace('<body>', '<body><div id="duplicate"></div><div id="duplicate"></div>'), encoding='utf-8')
         output = self.base / 'invalid-artifact'
-        with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(subprocess.CalledProcessError):
+        run = subprocess.run
+        # Capture the real child process: redirect_stdout only captures Python.
+        # Expected ::error:: output must not become an Actions error annotation.
+        def capture_run(*args, **kwargs):
+            return run(*args, **kwargs, capture_output=True, text=True, encoding='utf-8')
+        with contextlib.redirect_stdout(io.StringIO()), patch.object(BUILD.subprocess, 'run', side_effect=capture_run), self.assertRaises(subprocess.CalledProcessError) as failure:
             BUILD.build(self.root, output, NODE)
+        self.assertEqual(failure.exception.returncode, 1)
+        self.assertIn('IDs HTML duplicados: duplicate', failure.exception.stderr)
         self.assertFalse(output.exists())
+
+    def test_pdf_aliases_are_packaged_without_changing_uploads(self):
+        original = self.root / 'assets/uploads/catalog (1).pdf'
+        original.write_bytes(b'%PDF-1.7\nfixture')
+        aliases = {'assets/uploads/legacy.pdf': 'assets/uploads/catalog (1).pdf',
+                   'assets/uploads/catalogos/legacy.pdf': 'assets/uploads/catalog (1).pdf'}
+        (self.root / 'scripts/media-aliases.json').write_text(json.dumps(aliases), encoding='utf-8')
+        output = self.base / 'pdf-artifact'
+        with contextlib.redirect_stdout(io.StringIO()):
+            BUILD.build(self.root, output, NODE)
+        for alias in aliases:
+            self.assertEqual((output / alias).read_bytes(), original.read_bytes())
+            self.assertFalse((self.root / alias).exists())
+        self.assertFalse((output / 'scripts/media-aliases.json').exists())
+
+    def test_pdf_alias_preserves_existing_upload(self):
+        config = self.root / 'scripts/media-aliases.json'
+        config.write_text(json.dumps({'assets/uploads/legacy.pdf': 'assets/uploads/absent.pdf'}), encoding='utf-8')
+        original = self.root / 'assets/uploads/legacy.pdf'
+        original.write_bytes(b'%PDF-1.7\noriginal upload')
+        BUILD.add_media_aliases(self.root, self.root)
+        self.assertEqual(original.read_bytes(), b'%PDF-1.7\noriginal upload')
+
+    def test_pdf_alias_rejects_missing_invalid_and_unsafe_sources(self):
+        source = self.root / 'assets/uploads/invalid.pdf'
+        source.write_bytes(b'not a PDF')
+        cases = [[], {'assets/uploads/legacy.pdf': 'assets/uploads/missing.pdf'},
+                 {'assets/uploads/legacy.pdf': 'assets/uploads/invalid.pdf'},
+                 {'assets/uploads/../../../escape.pdf': 'assets/uploads/invalid.pdf'},
+                 {'assets/uploads/legacy.pdf': '../outside.pdf'}]
+        for aliases in cases:
+            with self.subTest(aliases=aliases):
+                (self.root / 'scripts/media-aliases.json').write_text(json.dumps(aliases), encoding='utf-8')
+                with self.assertRaises(ValueError):
+                    BUILD.add_media_aliases(self.root, self.root)
+        self.assertFalse((self.root / 'assets/uploads/legacy.pdf').exists())
 
     def test_missing_media_blocks_packaging(self):
         self.json('clientes', [{'logo': 'assets/uploads/missing.jpg'}])
