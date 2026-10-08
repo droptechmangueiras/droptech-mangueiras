@@ -8,7 +8,7 @@
       "etiqueta": "DropTech Mangueiras",
       "titulo": "Resistência e qualidade em cada metro.",
       "texto": "Soluções em mangueiras para irrigação, jardinagem e diferentes aplicações.",
-      "imagem": "assets/images/banners/banner-principal.webp",
+      "imagem": "/assets/uploads/WhatsApp Image 2026-10-07 at 14.18.00 (3).jpeg",
       "botao": "Conheça nossos produtos",
       "link": "produtos.html",
       "ordem": 1
@@ -18,7 +18,7 @@
       "etiqueta": "Fabricação própria",
       "titulo": "Produção acompanhada de perto.",
       "texto": "Do processo produtivo à preparação final, atenção aos detalhes para entregar produtos confiáveis.",
-      "imagem": "assets/images/fabrica/fabrica-01.webp",
+      "imagem": "/assets/uploads/WhatsApp Image 2026-10-07 at 14.18.23.jpeg",
       "botao": "Conheça a DropTech",
       "link": "quem-somos.html",
       "ordem": 2
@@ -28,7 +28,7 @@
       "etiqueta": "Soluções para diferentes aplicações",
       "titulo": "Flexibilidade para o dia a dia.",
       "texto": "Linhas desenvolvidas para jardinagem, irrigação e outras necessidades.",
-      "imagem": "/assets/uploads/imagem-do-chatgpt-30-de-set-de-2026-150045.png",
+      "imagem": "/assets/uploads/whatsapp-image-2026-09-28-at-205809-2.jpeg",
       "botao": "Ver produtos",
       "link": "produtos.html",
       "ordem": 3
